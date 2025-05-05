@@ -1,0 +1,2 @@
+# Kirby64RecompRandomizer
+
