@@ -56,7 +56,7 @@ mod_filename = "k64_archipelago_randomizer"
 
 # Reference symbol files.
 func_reference_syms_file = "Kirby64Syms/NK4E.syms.toml"
-data_reference_syms_files = [ "Kirby64Syms/NK4E.datasyms.toml" ]
+data_reference_syms_files = [ "Kirby64Syms/NK4E.datasyms.toml", "mod.datasyms.toml" ]
 
 # Additional files to include in the mod.
 additional_files = [ ]
