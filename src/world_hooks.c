@@ -13,16 +13,40 @@ RECOMP_HOOK_RETURN("func_800A2C80") void post_game_tick(){
     // set data storage and print to log current stage
     if (gGameState == 0xC){
         // we're in a menu
-        recomp_printf("Current Stage: %d_S", gLevelMenu);
+        recomp_printf("Current Stage: %d_S\n", gSelectedLevel);
     }
     if (gGameState == 0xF){
         // we're in a stage
-        recomp_printf("Current Stage: %d_%d", gLoadedLevel, gLoadedStage);
+        recomp_printf("Current Stage: %d_%d\n", gLoadedLevel, gLoadedStage);
     }
     if (recomp_get_config_u32("enum_option") == 1){
         gCopyAbilityUnlocked = 0xFFFFFFFFFFFFFFFF;
     }
     else {
         gCopyAbilityUnlocked = 0;
+    }
+}
+
+RECOMP_PATCH s32 func_8015874C_ovl4(void) {
+    recomp_printf("Checking Dark Star");
+    if (gDarkStarUnlock) return 6;
+    return 5;
+}
+
+RECOMP_HOOK_RETURN("init_save_file_maybe") void post_init_save(){
+    recomp_printf("Save file initialized");
+    gUnlockedStage = 3;
+    switch(gCurrentSaveFile){
+        case 0:
+            gSave1Stage = 3;
+            break;
+        case 1:
+            gSave2Stage = 3;
+            break;
+        case 2:
+            gSave3Stage = 3;
+            break;
+        default:
+            break;
     }
 }
