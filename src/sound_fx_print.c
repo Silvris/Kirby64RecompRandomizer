@@ -6,8 +6,8 @@
 #include "libc/stdbool.h"
 #include "libc/stdint.h"
 
-// Patches a function in the base game that's used to check if the player should quickspin.
-RECOMP_HOOK("play_sound") s32 on_play_sound(s32 sound) {
+// Print every currently played sound effect to console.
+RECOMP_HOOK("play_sound") void on_play_sound(s32 sound) {
     recomp_printf("enum_option: %d\n", recomp_get_config_u32("enum_option"));
     recomp_printf("number_option: %d\n", recomp_get_config_double("number_option"));
     char* string_option = recomp_get_config_string("string_option");
@@ -16,8 +16,6 @@ RECOMP_HOOK("play_sound") s32 on_play_sound(s32 sound) {
         recomp_free_config_string(string_option);
     }
     recomp_printf("played_sfx: %d\n", sound);
-    // Always spin attack.
-    return true;
 }
 
 
