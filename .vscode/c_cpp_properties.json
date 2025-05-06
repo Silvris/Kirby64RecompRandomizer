@@ -1,0 +1,20 @@
+{
+    "configurations": [
+        {
+            "name": "Mod",
+            "includePath": [
+                "${workspaceFolder}/include"
+            ],
+            "defines": [
+                "F3DEX_GBI_2",
+                "_LANGUAGE_C",
+                "MIPS"
+            ],
+            "compilerPath": "C:/msys64/mingw64/bin/clang.exe",
+            "cStandard": "c99",
+            "intelliSenseMode": "clang-x86",
+            "configurationProvider": "ms-vscode.makefile-tools"
+        }
+    ],
+    "version": 4
+}
