@@ -21,6 +21,9 @@ int stage_index[48] = {
     0, 1, 2, 3,-1,-1,-1,-1,
 };
 
+s32 GetLevelStageIndex(s32 level, s32 stage){
+    return (level << 3) + stage;
+}
 
 bool InitArchipelagoVariables(){
     for (int i = 0; i < 8; i++){

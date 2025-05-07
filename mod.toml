@@ -62,28 +62,25 @@ data_reference_syms_files = [ "Kirby64Syms/NK4E.datasyms.toml", "mod.datasyms.to
 additional_files = [ ]
 
 [[manifest.config_options]]
-id = "enum_option"
-name = "Enum Option"
+id = "debug_copy"
+name = "Enable Copy Abilities"
 description = "Test enum config option"
 type = "Enum"
-options = [ "First", "Second" ]
-default = "First"
+options = [ "No", "Yes" ]
+default = "Yes"
 
 [[manifest.config_options]]
-id = "number_option"
-name = "Number Option"
-description = "Test number config option."
-type = "Number"
-min = 0
-max = 10
-step = 0.1
-precision = 1
-percent = false
-default = 1
+id = "debug_dark"
+name = "Enable Dark Star"
+description = "Test enum config option"
+type = "Enum"
+options = [ "No", "Yes" ]
+default = "No"
 
 [[manifest.config_options]]
-id = "string_option"
-name = "String Option"
-description = "Test string config option."
-type = "String"
-default = "Lorem Ipsum"
+id = "debug_shift"
+name = "Enable Shifted Level Layout"
+description = "Test enum config option"
+type = "Enum"
+options = [ "No", "Yes" ]
+default = "Yes"

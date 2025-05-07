@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "recomputils.h"
 #include "game_tick_functions.h"
 #include "types.h"
 #include "Archipelago.h"
@@ -6,8 +7,10 @@
 void RedirectStage() {
     // It might be better in the long run to handle this from an AP array rather
     // than in RAM, but it works
-    s32 level_stage_index = gLoadedLevel << 5;
-    level_stage_index += gSelectedStage << 2;
+
+    s32 level_stage_index = GetLevelStageIndex(gLoadedLevel, gSelectedStage);
+    recomp_printf("Redirecting Stage %d-%d to %d-%d\n", gLoadedLevel, gLoadedStage,
+                   gLevelIndex[level_stage_index], gStageIndex[level_stage_index]);
     gLoadedLevel = gLevelIndex[level_stage_index];
     gLoadedStage = gStageIndex[level_stage_index];
 }

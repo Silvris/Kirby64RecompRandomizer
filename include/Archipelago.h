@@ -17,6 +17,7 @@ extern u32 gStageIndex[48];
 
 bool InitArchipelagoVariables();
 bool HasFriend(int index);
+s32 GetLevelStageIndex(s32 level, s32 stage);
 //bool SetArchipelagoVariables();
 
 //bool SetKirbyFlavor(int flavor);
