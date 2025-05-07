@@ -39,6 +39,7 @@ RECOMP_HOOK_RETURN("func_800A2C80") void post_game_tick(){
     else {
         gLevelIndex[0] = 0;
     }
+    gCrystalShards = recomp_get_config_u32("debug_crystals");
 }
 
 RECOMP_PATCH s32 func_8015874C_ovl4(void) {

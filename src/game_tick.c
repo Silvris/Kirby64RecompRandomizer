@@ -326,7 +326,6 @@ RECOMP_PATCH void game_tick(s32 arg0) {
                     case 3:                             /* switch 2 */
                         temp_v1 = D_800D6B9C + 1;
                         D_800D6B9C = temp_v1;
-                        gCurrentLevel += 1;
                         func_800B9C50(D_800D6B88);
                         CheckBossAccess();
                         D_800D6B80 = 1;
