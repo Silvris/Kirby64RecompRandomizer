@@ -50,3 +50,12 @@ RECOMP_HOOK_RETURN("init_save_file_maybe") void post_init_save(){
             break;
     }
 }
+
+RECOMP_PATCH u32 func_80153294_ovl4(u32 a1, u32 a2, u32 a3) {
+    // you ever just match a new function just to replace it
+    u32 temp_a0 = (a1 << 2) + a2;
+    if ((gCrystalArray[temp_a0] & (1 << a3))){
+        return 1;
+    };
+    return 0;
+}

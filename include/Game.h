@@ -1,11 +1,5 @@
 #include "types.h"
-
-struct CrystalLevel{
-    u8 Crystal1 : 1;
-    u8 Crystal2 : 1;
-    u8 Crystal3 : 1;
-    u8 high : 5;
-};
+#include "libc/stdbool.h"
 
 extern s32 gGameState;
 extern s32 gCurrentSaveFile;
@@ -18,8 +12,10 @@ extern s32 gLoadedRoom;
 extern s32 gUnlockedLevel;
 extern s32 gUnlockedStage;
 extern s32 gSelectedLevel;
-extern u8  gBossCrystals[5];
-extern struct CrystalLevel gCrystalArray[24];
+extern s32 gSelectedStage;
+extern u8  gBossCrystals[6];
+extern u8 gCrystalArray[24];
+extern u8  gStageCompletion[33];
 extern u64 gCopyAbilityUnlocked;
 extern s32 gCrystalShards;
 extern u32 gReceivedIndex;

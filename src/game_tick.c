@@ -3,6 +3,8 @@
 #include "recompconfig.h"
 #include "GObj.h"
 #include "types.h"
+#include "Archipelago.h"
+#include "game_tick_functions.h"
 
 u8 ovl1_TamperCheck(void);
 
@@ -92,7 +94,8 @@ int func_80158048_ovl4();
 int func_800B8AD4(s32);
 int func_800A3408();
 
-s32 set_cutscene_watched(s32 arg0, s32 fileNum);
+bool check_cutscene_watched(s32 cutscene);
+s32 set_cutscene_watched(s32 cutscene, s32 fileNum);
 
 int func_80020C88();
 
@@ -145,6 +148,7 @@ RECOMP_PATCH void game_tick(s32 arg0) {
     load_overlay(1);
     func_800A2C80();
     func_800A3058();
+    InitArchipelagoVariables();
     while (1) {
 
         func_800A2C80();
@@ -268,6 +272,8 @@ RECOMP_PATCH void game_tick(s32 arg0) {
                     D_800BE530 = D_800D6B9C;
                     D_800BE504 = D_800D6B9C;
                     gGameState = 0xF;
+                    RedirectStage();
+
                 } else {
                     gGameState = 0xB;
                 }
@@ -319,12 +325,11 @@ RECOMP_PATCH void game_tick(s32 arg0) {
                         break;
                     case 3:                             /* switch 2 */
                         temp_v1 = D_800D6B9C + 1;
-                        if (gCurrentLevel == ((u32) temp_v1) && gCurrentWorld == (D_800D6B98 + 1)) {
-                            D_800D6B9C = temp_v1;
-                            gCurrentLevel += 1;
-                            func_800B9C50(D_800D6B88);
-                            D_800D6B80 = 1;
-                        }
+                        D_800D6B9C = temp_v1;
+                        gCurrentLevel += 1;
+                        func_800B9C50(D_800D6B88);
+                        CheckBossAccess();
+                        D_800D6B80 = 1;
                         func_800A74D8();
                         if (func_800F8560() != 9) {
                             gGameState = 0xC;
@@ -335,17 +340,17 @@ RECOMP_PATCH void game_tick(s32 arg0) {
                         }
                         break;
                     case 4:                             /* switch 2 */
-                        switch (D_800BE500) {           /* switch 3 */
+                        switch (gLoadedLevel) {           /* switch 3 */
                             case 0:                     /* switch 3 */
                             case 1:                     /* switch 3 */
                             case 2:                     /* switch 3 */
                             case 3:                     /* switch 3 */
                             case 4:                     /* switch 3 */
-                                if ((gCurrentWorld == (D_800D6B98 + 1)) && (gCurrentWorld < 7)) {
+                                if ((gCurrentWorld == (gSelectedLevel + 1)) && (gCurrentWorld < 7)) {
                                     gCurrentWorld += 1;
-                                    gCurrentLevel = 1;
+                                    gCurrentLevel = gLevelStart[gCurrentWorld];
                                     D_800D6B7C = 1;
-                                    func_800B9C50(D_800D6B88);
+                                    func_800B9C50(gCurrentSaveFile);
                                 }
                                 func_800A74D8();
                                 func_800A336C();
@@ -362,12 +367,12 @@ RECOMP_PATCH void game_tick(s32 arg0) {
                                 } else {
                                     if ((gCurrentWorld == (D_800D6B98 + 1)) && (gCurrentWorld < 7)) {
                                         gCurrentWorld += 1;
-                                        gCurrentLevel = 1;
+                                        gCurrentLevel = gLevelStart[gCurrentWorld];
                                         func_800B9D60(D_800D6B88, 5);
                                     }
                                     func_800B9C50(D_800D6B88);
                                     gGameState = 0x12;
-                                    if (D_800D6BA8 == 0x64) {
+                                    if (MiracleMatterCheck()) {
                                         gGameState = 0xC;
                                         if (check_cutscene_watched(0xD) == 0) {
                                             D_800BE500 = 6;
@@ -392,6 +397,8 @@ RECOMP_PATCH void game_tick(s32 arg0) {
                         if ((gCurrentWorld == (D_800D6B98 + 1)) && (gCurrentWorld < 8)) {
                             gCurrentWorld = 8;
                             gCurrentLevel = 1;
+                            //Set goal here
+                            gBossCrystals[5] = 1;
                             func_800B9D60(D_800D6B88, 6);
                         }
                         func_800A74D8();

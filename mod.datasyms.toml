@@ -1,5 +1,5 @@
 [[section]]
-name = ".ovl1_bss"
+name = "APSymbols"
 vram = 0x800D69C0
 size = 0x1F7E0
 
@@ -11,8 +11,10 @@ symbols = [
     { name = "gUnlockedLevel", vram = 0x800D6B90 },
     { name = "gUnlockedStage", vram = 0x800D6B94 },
     { name = "gSelectedLevel", vram = 0x800D6B98 },
+    { name = "gSelectedStage", vram = 0x800D6B9C },
     { name = "gBossCrystals", vram = 0x800D6BC0 },
     { name = "gCrystalArray", vram = 0x800D6BC8 },
+    { name = "gStageCompletion", vram = 0x800D6BE0 },
     { "name" = "gCopyAbilityUnlocked", "vram" = 0x800D6C68},
     { "name" = "gCrystalShards", "vram" = 0x800D6C70},
     { "name" = "gReceivedIndex", "vram" = 0x800D6C74},
@@ -22,4 +24,10 @@ symbols = [
     { name = "gSave1Stage", vram = 0x800ECA0C },
     { name = "gSave2Stage", vram = 0x800ECA6C },
     { name = "gSave3Stage", vram = 0x800ECABC },
+    { name = "gArchipelago", vram = 0x80127490 },
+    { name = "gLevelStart", vram = 0x801274A0 },
+    { name = "gCrystalRequirement", vram = 0x801274A8 },
+    { name = "gSlotData", vram = 0x801274B0 },
+    { name = "gLevelIndex", vram = 0x801274C0 },
+    { name = "gStageIndex", vram = 0x80127580 },
 ]
