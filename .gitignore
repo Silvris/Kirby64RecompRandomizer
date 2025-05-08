@@ -33,3 +33,10 @@
 
 vscode/settings.json
 /build
+*.vsidx
+/K64APClient/.vs
+/K64APClient/K64APClient/x64
+*.filters
+*.user
+*.exp
+*.pdb
