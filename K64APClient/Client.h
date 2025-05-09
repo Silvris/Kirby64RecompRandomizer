@@ -1,6 +1,9 @@
 #pragma once
 
+#include <stdint.h>
 #include <string>
+#include <iostream>
+#include <filesystem>
 
 #if defined(_MSC_VER)
 //  Microsoft
@@ -14,6 +17,8 @@
 #define DLLEXPORT
 #define DLLIMPORT
 #endif
+
+#define MIN(x, y) (x < y ? x : y)
 
 typedef uint64_t gpr;
 
@@ -45,21 +50,85 @@ typedef struct {
     uint8_t mips3_float_mode;
 } recomp_context;
 
-#define TO_PTR(type, var) ((type*)(&rdram[(uint64_t)var - 0xFFFFFFFF80000000]))
-#define MEM_B(offset, reg) (*(int8_t*)(rdram + ((((reg) + (offset)) ^ 3) - 0xFFFFFFFF80000000)))
-#define MEM_W(offset, reg) (*(int32_t*)(rdram + ((((reg) + (offset))) - 0xFFFFFFFF80000000)))
+typedef uint8_t u8;
+typedef uint16_t u16;
+typedef uint32_t u32;
+typedef uint64_t u64;
 
-#define PTR(x) uint32_t
+typedef int8_t s8;
+typedef int16_t s16;
+typedef int32_t s32;
+typedef int64_t s64;
 
-void getStr(uint8_t* rdram, PTR(char) ptr, std::string& outString) {
-    char c = MEM_B(0, (gpr)ptr);
-    uint32_t i = 0;
-    while (c != 0) {
-        outString += c;
-        i += 1;
-        c = MEM_B(i, (gpr)ptr);
-    }
+#if 0 // For native compilation
+#  define PTR(x) x*
+#  define RDRAM_ARG
+#  define RDRAM_ARG1
+#  define PASS_RDRAM
+#  define PASS_RDRAM1
+#  define TO_PTR(type, var) var
+#  define GET_MEMBER(type, addr, member) (&addr->member)
+#  ifdef __cplusplus
+#    define NULLPTR nullptr
+#  endif
+#else
+#  define PTR(x) int32_t
+#  define RDRAM_ARG uint8_t *rdram,
+#  define RDRAM_ARG1 uint8_t *rdram
+#  define PASS_RDRAM rdram,
+#  define PASS_RDRAM1 rdram
+#  define TO_PTR(type, var) ((type*)(&rdram[(uint64_t)var - 0xFFFFFFFF80000000]))
+#  define GET_MEMBER(type, addr, member) (addr + (intptr_t)&(((type*)nullptr)->member))
+#  ifdef __cplusplus
+#    define NULLPTR (PTR(void))0
+#  endif
+#endif
+
+typedef uint64_t gpr;
+
+#define SIGNED(val) \
+    ((int64_t)(val))
+
+#define ADD32(a, b) \
+    ((gpr)(int32_t)((a) + (b)))
+
+#define SUB32(a, b) \
+    ((gpr)(int32_t)((a) - (b)))
+
+#define MEM_W(offset, reg) \
+    (*(int32_t*)(rdram + ((((reg) + (offset))) - 0xFFFFFFFF80000000)))
+
+#define MEM_H(offset, reg) \
+    (*(int16_t*)(rdram + ((((reg) + (offset)) ^ 2) - 0xFFFFFFFF80000000)))
+
+#define MEM_B(offset, reg) \
+    (*(int8_t*)(rdram + ((((reg) + (offset)) ^ 3) - 0xFFFFFFFF80000000)))
+
+#define MEM_HU(offset, reg) \
+    (*(uint16_t*)(rdram + ((((reg) + (offset)) ^ 2) - 0xFFFFFFFF80000000)))
+
+#define MEM_BU(offset, reg) \
+    (*(uint8_t*)(rdram + ((((reg) + (offset)) ^ 3) - 0xFFFFFFFF80000000)))
+
+#define SD(val, offset, reg) { \
+    *(uint32_t*)(rdram + ((((reg) + (offset) + 4)) - 0xFFFFFFFF80000000)) = (uint32_t)((gpr)(val) >> 0); \
+    *(uint32_t*)(rdram + ((((reg) + (offset) + 0)) - 0xFFFFFFFF80000000)) = (uint32_t)((gpr)(val) >> 32); \
 }
+
+#define GI_TRUE_SKULL_TOKEN GI_75
+
+#define GI_AP_PROG GI_77
+#define GI_AP_FILLER GI_90
+#define GI_AP_USEFUL GI_B3
+
+#define TO_PTR(type, var) ((type*)(&rdram[(uint64_t)var - 0xFFFFFFFF80000000]))
+#define PTR(x) int32_t
+#define RECOMP_DLL_C_FUNC(_f_name) DLLEXPORT void _f_name(uint8_t* rdram, recomp_context* ctx)
+#define RECOMP_DLL_FUNC(_f_name) extern "C" RECOMP_DLL_C_FUNC(_f_name)
+#define RECOMP_ARG(_type, _pos) _arg<_pos, _type>(rdram, ctx)
+#define RECOMP_ARG_STR(_pos) _arg_string<_pos>(rdram, ctx)
+#define RECOMP_ARG_U8STR(_pos) _arg_u8string<_pos>(rdram, ctx)
+#define RECOMP_RETURN(_type, _value) _return(ctx, (_type) _value); return
 
 template<int index, typename T>
 T _arg(uint8_t* rdram, recomp_context* ctx) {
@@ -93,6 +162,48 @@ T _arg(uint8_t* rdram, recomp_context* ctx) {
     }
 };
 
+template <int arg_index>
+std::string _arg_string(uint8_t* rdram, recomp_context* ctx) {
+    PTR(char) str = _arg<arg_index, PTR(char)>(rdram, ctx);
+
+    // Get the length of the byteswapped string.
+    size_t len = 0;
+    while (MEM_B(str, len) != 0x00) {
+        len++;
+    }
+
+    std::string ret{};
+    ret.reserve(len + 1);
+
+    for (size_t i = 0; i < len; i++) {
+        ret += (char)MEM_B(str, i);
+    }
+
+    return ret;
+}
+
+template <int arg_index>
+std::u8string _arg_u8string(uint8_t* rdram, recomp_context* ctx) {
+    PTR(char) str = _arg<arg_index, PTR(char)>(rdram, ctx);
+
+    // Get the length of the byteswapped string.
+    size_t len = 0;
+    while (MEM_B(str, len) != 0x00) {
+        std::cout << MEM_B(str, len);
+        len++;
+    }
+
+    std::u8string ret{};
+    ret.reserve(len + 1);
+
+    for (size_t i = 0; i < len; i++) {
+        ret += (char)MEM_B(str, i);
+    }
+
+    return ret;
+}
+
+
 template <typename T>
 void _return(recomp_context* ctx, T val) {
     static_assert(sizeof(T) <= 4, "Only 32-bit value returns supported currently");
@@ -108,5 +219,4 @@ void _return(recomp_context* ctx, T val) {
             static_assert(flag, "Unsupported type");
         }();
     }
-};
-DLLEXPORT void InitializeArchipelago(uint8_t* rdram, recomp_context* ctx);
+}
