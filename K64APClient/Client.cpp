@@ -165,9 +165,9 @@ extern "C"
         std::string playerName;
         std::string password;
 
-        PTR(char) address_ptr = _arg<0, PTR(char)>(rdram, ctx);
-        PTR(char) player_name_ptr = _arg<1, PTR(char)>(rdram, ctx);
-        PTR(char) password_ptr = _arg<2, PTR(char)>(rdram, ctx);
+        PTR(char) address_ptr = _arg<1, PTR(char)>(rdram, ctx);
+        PTR(char) player_name_ptr = _arg<2, PTR(char)>(rdram, ctx);
+        PTR(char) password_ptr = _arg<3, PTR(char)>(rdram, ctx);
 
         getStr(rdram, address_ptr, address);
         getStr(rdram, player_name_ptr, playerName);

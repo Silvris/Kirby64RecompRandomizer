@@ -15,6 +15,9 @@ endif
 
 TARGET  := $(BUILD_DIR)/mod.elf
 
+MSBUILD := $(shell vswhere -latest -requires Microsoft.Component.MSBuild -find MSBuild/**/Bin/MSBuild.exe)
+MSBUILD_FLAGS := -nologo /property:Configuration=Release /property:Platform=x64
+
 LDSCRIPT := mod.ld
 CFLAGS   := -target mips -mips2 -mabi=32 -O2 -G0 -mno-abicalls -mno-odd-spreg -mno-check-zero-division \
 			-fomit-frame-pointer -ffast-math -fno-unsafe-math-optimizations -fno-builtin-memset \
@@ -40,7 +43,13 @@ endif
 $(C_OBJS): $(BUILD_DIR)/%.o : %.c | $(BUILD_DIR) $(BUILD_DIR)/src
 	$(CC) $(CFLAGS) $(CPPFLAGS) $< -MMD -MF $(@:.o=.d) -c -o $@
 
-all: $(TARGET)
+apcpp:
+	$(MSBUILD) $(MSBUILD_FLAGS) ./K64APClient/lib/APCpp/build/APCpp.sln
+
+client: apcpp
+	$(MSBUILD) $(MSBUILD_FLAGS) ./K64APClient/K64APClient.sln
+
+all: $(TARGET) client
 	RecompModTool.exe mod.toml $(BUILD_DIR)/output
 	echo "Done."
 

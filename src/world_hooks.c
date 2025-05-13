@@ -12,7 +12,8 @@
 
 RECOMP_HOOK_RETURN("func_800A2C80") void post_game_tick(){
     // lots of ground to cover
-    // set data storage and print to log current stage
+    // set data storage and print to log current stage'
+    recomp_printf("Game State: 0x%x\n", gGameState);
     if (gGameState == 0xC){
         // we're in a menu
         recomp_printf("Current Stage: %d_S\n", gSelectedLevel);
