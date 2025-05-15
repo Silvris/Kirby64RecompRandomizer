@@ -14,7 +14,7 @@ RECOMP_IMPORT(".", void rando_send_location(u32 location_id));
 RECOMP_IMPORT(".", void rando_complete_goal());
 RECOMP_IMPORT(".", u32 rando_has_item(u32 item_id));
 RECOMP_IMPORT(".", u32 rando_has_item_async(u32 item_id));
-//RECOMP_IMPORT(".", u32 rando_get_own_team_id());
+RECOMP_IMPORT(".", u32 rando_get_own_team_id());
 RECOMP_IMPORT(".", u32 rando_get_own_slot_id());
 RECOMP_IMPORT(".", u32 rando_get_items_size());
 RECOMP_IMPORT(".", u32 rando_get_item(u32 items_i));
@@ -25,6 +25,9 @@ RECOMP_IMPORT(".", void rando_get_location_item_player(u32 location_id, char* ou
 RECOMP_IMPORT(".", void rando_get_location_item_name(u32 location_id, char* out_str));
 RECOMP_IMPORT(".", u32 rando_get_last_location_sent());
 RECOMP_IMPORT(".", u32 rando_get_seed_name(char* seed_name_out, u32 buffer_size));
+RECOMP_IMPORT(".", bool rando_is_connected());
+RECOMP_IMPORT(".", bool rando_connect_failed());
+RECOMP_IMPORT(".", void rando_get_player_levels());
 
 struct SlotData{
     u8 SplitPowerCombos;

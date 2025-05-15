@@ -182,6 +182,26 @@ extern "C"
         init_thread.detach();
     }
 
+    DLLEXPORT void rando_get_player_levels(uint8_t* rdram, recomp_context* ctx) {
+        // we set them here because it's easy lmao
+        // no reason to do it in mod
+        SlotDataValue player_levels = AP_GetSlotDataValue(state, "player_levels");
+        for (const auto& index : player_levels.values) {
+            int i = stoi(index.first) - 1;
+            SlotDataValue level = index.second;
+            if (!(level.type == SlotDataType::Array)) {
+                continue; // we can't handle this one
+            }
+            for (const auto& stage : level.values) {
+                int k = stoi(stage.first);
+                if (stage.second.type != SlotDataType::Int) continue;
+                s32 lvl = stage.second._int & 0xFF;
+                MEM_W(0xFFFFFFFF801274C0 + ((k + (i << 3)) << 2), 0) = 1;
+            }
+        }
+
+    }
+
     DLLEXPORT void rando_get_seed_name(uint8_t* rdram, recomp_context* ctx) {
         PTR(char) seed_name_out = _arg<0, PTR(char)>(rdram, ctx);
         u32 seed_name_out_len = _arg<1, u32>(rdram, ctx);

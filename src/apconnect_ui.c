@@ -5,25 +5,24 @@
 #include "recomputils.h"
 #include "types.h"
 
-RECOMP_IMPORT(".", bool rando_init(char* game, char* address, char* player_name, char* password));
+RECOMP_IMPORT(".", void rando_init(char* game, char* address, char* player_name, char* password));
 
 ApconnectMenu connect_menu;
 
 static void connectPressed(RecompuiResource resource, const RecompuiEventData* data, void* userdata) {
-    recomp_printf("%i", data->type);
     if (data->type == UI_EVENT_CLICK) {
-        recomp_printf("Pressed connect.");
+        recomp_printf("Pressed connect.\n");
         char* server_text = recompui_get_input_text(connect_menu.server_textinput);
         char* slot_text = recompui_get_input_text(connect_menu.slot_textinput);
         char* password_text = recompui_get_input_text(connect_menu.password_textinput);
-        bool success = rando_init("Kirby 64 - The Crystal Shards", server_text, slot_text, password_text);
+        rando_init("Kirby 64 - The Crystal Shards", server_text, slot_text, password_text);
         recomp_free(server_text);
         recomp_free(slot_text);
         recomp_free(password_text);
+        bool failure = rando_connect_failed();
 
-        if (success) {
-            recomp_printf("Successfully connected");
-            randoStart(true);
+        if (!failure) {
+            recomp_printf("Successfully connected\n");
             recompui_hide_context(connect_menu.context);
             recompui_close_context(connect_menu.context);
             
@@ -31,7 +30,7 @@ static void connectPressed(RecompuiResource resource, const RecompuiEventData* d
         }
         else {
             recompui_close_context(connect_menu.context);
-            recomp_printf("Failed to connect");
+            recomp_printf("Failed to connect\n");
             recompui_open_context(connect_menu.context);
         }
     }

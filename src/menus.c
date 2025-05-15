@@ -69,11 +69,6 @@ void createUiFrame(RecompuiContext context, UiFrame* frame) {
 
 #define C_TO_PARAMS(c) (c >> 16) & 0xFF, (c >> 8) & 0xFF, c & 0xFF
 
-void randoStart(bool multiworld) {
-    rando_started = true;
-    is_multiworld = multiworld;
-}
-
 #define MAIN_THREAD_STACK_LEN 0x4000
 #define MAIN_THREAD_STACK_LEN_U64 ((MAIN_THREAD_STACK_LEN) / sizeof(u64))
 #define OS_PRIORITY_IDLE 0

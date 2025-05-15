@@ -64,7 +64,10 @@ native_libraries = [
         "rando_get_location_item_player",
         "rando_get_location_item_name",
         "rando_get_last_location_sent",
-        "rando_get_seed_name"
+        "rando_get_seed_name",
+        "rando_connect_failed",
+        "rando_is_connected",
+        "rando_get_player_levels",
         ] }
 ]
 

@@ -150,7 +150,6 @@ RECOMP_PATCH void game_tick(s32 arg0) {
     func_800A3058();
     InitArchipelagoVariables();
     while (1) {
-        recomp_printf("Test print\n");
         func_800A2C80();
         switch (gGameState) {                           /* switch 1 */
             default:                                            /* switch 1 */

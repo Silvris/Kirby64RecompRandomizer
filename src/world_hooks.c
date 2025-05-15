@@ -53,9 +53,8 @@ RECOMP_PATCH u32 func_80153294_ovl4(u32 level, u32 stage, u32 crystal) {
 static bool save_init = false;
 
 RECOMP_HOOK_RETURN("func_8000256C") void on_main(){
-    recomp_printf("main loop?\n");
-    /*
-    if (rando_started && !save_init) {
+    //recomp_printf("main loop?\n");
+    if (!save_init && rando_is_connected()) {
         // Set the filename based on the seed and session type.
         char file_name[72];
         char multi_prefix[7] = "multi_";
@@ -73,7 +72,7 @@ RECOMP_HOOK_RETURN("func_8000256C") void on_main(){
             }
         }
         recomp_change_save_file(file_name);
-
+        rando_get_player_levels();
         //colors_set_human_tunic(C_TO_PARAMS(rando_get_tunic_color()));
         save_init = true;
     }//*/
