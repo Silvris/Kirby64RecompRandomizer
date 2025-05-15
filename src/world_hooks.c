@@ -50,6 +50,27 @@ RECOMP_PATCH u32 func_80153294_ovl4(u32 level, u32 stage, u32 crystal) {
     return 0;
 }
 
+int power_combo_offset[8] = {
+    0, 7, 14, 20, 25, 29, 32, 34
+};
+
+void handle_copy_ability(u32 ability){
+    //check the trivial case
+    gCopyAbilityUnlocked |= (1 << (ability - 1));
+    if (gSlotData.SplitPowerCombos){
+        return;
+    }
+    // on non-split, need to handle the copy ability
+    for (int i = 1; i < 8; i++){
+        for(int j = i; j < 8; j++){
+            if ((gCopyAbilityUnlocked & (1 << (i-1))) && (gCopyAbilityUnlocked & (1 << (j-1)))){
+                gCopyAbilityUnlocked |= (1 << (power_combo_offset[i] + (j-i)));
+            }
+        }
+    }
+
+}
+
 static bool save_init = false;
 
 extern void play_sound(int sfx);
@@ -61,21 +82,61 @@ RECOMP_HOOK_RETURN("func_8000256C") void on_main(){
         char multi_prefix[7] = "multi_";
         char solo_prefix[7] = "solo___";
         rando_get_seed_name(file_name + 7, sizeof(file_name) - 7);
-        recomp_printf(file_name);
-        if (is_multiworld) {
-            for (int i = 0; i < 7; i++){
-                file_name[i] = multi_prefix[i];
-            }
-        }
-        else {
-            for (int i = 0; i < 7; i++){
-                file_name[i] = solo_prefix[i];
-            }
+        for (int i = 0; i < 7; i++){
+            file_name[i] = multi_prefix[i];
         }
         recomp_change_save_file(file_name);
         rando_get_slot_data();
         play_sound(1);
         //colors_set_human_tunic(C_TO_PARAMS(rando_get_tunic_color()));
         save_init = true;
-    }//*/
+    }
+    if(rando_is_connected()){
+        // rando main loop
+        u32 item_list = rando_get_items_size();
+        if (item_list > gReceivedIndex){
+            u32 received_item = rando_get_item(gReceivedIndex);
+            u32 received_group = received_item & 0xF00;
+            gReceivedIndex++;
+            switch (received_group) {
+                case 0:
+                    // copy ability or misc item, check first
+                    recomp_printf("Received item: %i", received_item & 0xFF);
+                    switch(received_item & 0xFF){
+                        case 0x20:
+                            gCrystalShards++;
+                            play_sound(203);
+                            break;
+                        case 0x21:
+                            gKirbyLives++;
+                            gKirbyLivesVisual++;
+                            play_sound(1);
+                            break;
+                        case 0x22:
+                            gKirbyHp = 6.0f;
+                            gKirbyHpVisual = 6;
+                            play_sound(202);
+                            break;
+                        case 0x23:
+                            gKirbyState.actionChange = 0x100;
+                            play_sound(202);
+                            break;
+                        default:
+                            handle_copy_ability(received_item & 0xFF);
+                            play_sound(625);
+                            break;
+                    }
+                    break;
+                case 0x100:
+                    // friend
+                    gFriendUnlocked[received_item & 0xF] = 1;
+                    play_sound(625);
+                    break;
+                case 0x200:
+                    gCopyAbilityUnlocked |= (1 << (7 + (received_item & 0xFF)));
+                    play_sound(625);
+                    break;
+            }
+        }
+    }
 }

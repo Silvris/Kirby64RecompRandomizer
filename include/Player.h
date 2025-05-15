@@ -1,6 +1,12 @@
 #pragma once
 #include "types.h"
 
+extern u32 gKirbyLives;
+extern u32 gKirbyLivesVisual;
+extern f32 gKirbyHp;
+extern u32 gKirbyHpVisual;
+extern u32 gKirbyStars;
+
 struct KirbyState_114 {
     u32 unk0;
     u32 unk4;

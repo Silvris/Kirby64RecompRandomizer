@@ -304,7 +304,6 @@ extern "C"
 
         std::string key = "";
         getStr(rdram, ptr, key);
-        key += "_P" + std::to_string(AP_GetPlayerID(state));
         char* value = AP_GetDataStorageSync(state, key.c_str());
 
         setStr(rdram, ret_ptr, value);
@@ -316,7 +315,6 @@ extern "C"
         u32 value = _arg<1, u32>(rdram, ctx);
         std::string key = "";
         getStr(rdram, ptr, key);
-        key += "_P" + std::to_string(AP_GetPlayerID(state));
 
         try
         {
@@ -336,7 +334,6 @@ extern "C"
         u32 value = _arg<1, u32>(rdram, ctx);
         std::string key = "";
         getStr(rdram, ptr, key);
-        key += "_P" + std::to_string(AP_GetPlayerID(state));
 
         try
         {
@@ -361,7 +358,6 @@ extern "C"
         std::string value = "";
         getStr(rdram, value_ptr, value);
 
-        key += "_P" + std::to_string(AP_GetPlayerID(state));
 
         try
         {
@@ -386,7 +382,6 @@ extern "C"
         std::string value = "";
         getStr(rdram, value_ptr, value);
 
-        key += "_P" + std::to_string(AP_GetPlayerID(state));
 
         try
         {
