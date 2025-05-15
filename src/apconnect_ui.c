@@ -22,10 +22,11 @@ static void connectPressed(RecompuiResource resource, const RecompuiEventData* d
         recomp_free(password_text);
 
         if (success) {
+            recomp_printf("Successfully connected");
             randoStart(true);
             recompui_hide_context(connect_menu.context);
             recompui_close_context(connect_menu.context);
-            recomp_printf("Successfully connected");
+            
             recompui_open_context(connect_menu.context);
         }
         else {

@@ -69,9 +69,6 @@ void createUiFrame(RecompuiContext context, UiFrame* frame) {
 
 #define C_TO_PARAMS(c) (c >> 16) & 0xFF, (c >> 8) & 0xFF, c & 0xFF
 
-static bool rando_started = false;
-static bool is_multiworld = false;
-
 void randoStart(bool multiworld) {
     rando_started = true;
     is_multiworld = multiworld;
@@ -95,47 +92,6 @@ void threadx_archipelago(void *arg) {
         osSetThreadPri(APThread, 1);
         break;
     }
-}
-
-RECOMP_PATCH void thread1_idle(void *arg){
-    //frankly this is a scary hook
-    //but its the best spot
-    crash_screen_start_thread();
-    //APThread = recomp_alloc(sizeof(OSThread));
-    //u64* ap_stack = recomp_alloc(MAIN_THREAD_STACK_LEN);
-    osCreateThread(&gGameThread, 5, thread5_game, arg, &gGameThreadStack[MAIN_THREAD_STACK_LEN_U64], 50);
-    //osCreateThread(APThread, 64, threadx_archipelago, arg, &ap_stack[MAIN_THREAD_STACK_LEN_U64], 50);
-    gGameThreadStack[7] = STACK_TOP_MAGIC;
-    //ap_stack[7] = STACK_TOP_MAGIC;
-    if (D_8003DC94 == 0) {
-        osStartThread(&gGameThread);
-        //osStartThread(APThread);
-    }
-    while(!rando_started){
-        
-    };
-    if (rando_started) {
-        // Set the filename based on the seed and session type.
-        char file_name[72];
-        char multi_prefix[7] = "multi_";
-        char solo_prefix[7] = "solo___";
-        rando_get_seed_name(file_name + 7, sizeof(file_name) - 7);
-        if (is_multiworld) {
-            for (int i = 0; i < 7; i++){
-                file_name[i] = multi_prefix[i];
-            }
-        }
-        else {
-            for (int i = 0; i < 7; i++){
-                file_name[i] = solo_prefix[i];
-            }
-        }
-        recomp_change_save_file(file_name);
-
-        //colors_set_human_tunic(C_TO_PARAMS(rando_get_tunic_color()));
-    }
-    osSetThreadPri(NULL, OS_PRIORITY_IDLE);
-    while (1);
 }
 
 RECOMP_HOOK_RETURN("cboot") void on_boot(){

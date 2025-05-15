@@ -11,3 +11,5 @@ typedef struct {
 
 void randoStart(bool multiworld);
 void createUiFrame(RecompuiContext context, UiFrame* frame);
+static bool rando_started = false;
+static bool is_multiworld = false;

@@ -50,6 +50,31 @@ RECOMP_PATCH u32 func_80153294_ovl4(u32 level, u32 stage, u32 crystal) {
     return 0;
 }
 
+static bool save_init = false;
+
 RECOMP_HOOK_RETURN("func_8000256C") void on_main(){
     recomp_printf("main loop?\n");
+    /*
+    if (rando_started && !save_init) {
+        // Set the filename based on the seed and session type.
+        char file_name[72];
+        char multi_prefix[7] = "multi_";
+        char solo_prefix[7] = "solo___";
+        rando_get_seed_name(file_name + 7, sizeof(file_name) - 7);
+        recomp_printf(file_name);
+        if (is_multiworld) {
+            for (int i = 0; i < 7; i++){
+                file_name[i] = multi_prefix[i];
+            }
+        }
+        else {
+            for (int i = 0; i < 7; i++){
+                file_name[i] = solo_prefix[i];
+            }
+        }
+        recomp_change_save_file(file_name);
+
+        //colors_set_human_tunic(C_TO_PARAMS(rando_get_tunic_color()));
+        save_init = true;
+    }//*/
 }

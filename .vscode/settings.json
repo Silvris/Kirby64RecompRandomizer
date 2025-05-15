@@ -18,7 +18,8 @@
         "ui_funcs.h": "c",
         "recompui_event_structs.h": "c",
         "patch_helpers.h": "c",
-        "stdarg.h": "c"
+        "stdarg.h": "c",
+        "menus.h": "c"
     },
     "makefile.dryrunSwitches": [
         "--always-make",
