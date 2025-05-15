@@ -52,6 +52,7 @@ RECOMP_PATCH u32 func_80153294_ovl4(u32 level, u32 stage, u32 crystal) {
 
 static bool save_init = false;
 
+extern void play_sound(int sfx);
 RECOMP_HOOK_RETURN("func_8000256C") void on_main(){
     //recomp_printf("main loop?\n");
     if (!save_init && rando_is_connected()) {
@@ -72,7 +73,8 @@ RECOMP_HOOK_RETURN("func_8000256C") void on_main(){
             }
         }
         recomp_change_save_file(file_name);
-        rando_get_player_levels();
+        rando_get_slot_data();
+        play_sound(1);
         //colors_set_human_tunic(C_TO_PARAMS(rando_get_tunic_color()));
         save_init = true;
     }//*/

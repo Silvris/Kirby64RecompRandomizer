@@ -67,7 +67,7 @@ native_libraries = [
         "rando_get_seed_name",
         "rando_connect_failed",
         "rando_is_connected",
-        "rando_get_player_levels",
+        "rando_get_slot_data",
         ] }
 ]
 

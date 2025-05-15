@@ -190,7 +190,7 @@ extern "C"
         init_thread.detach();
     }
 
-    DLLEXPORT void rando_get_player_levels(uint8_t* rdram, recomp_context* ctx) {
+    DLLEXPORT void rando_get_slot_data(uint8_t* rdram, recomp_context* ctx) {
         // we set them here because it's easy lmao
         // no reason to do it in mod
         SlotDataValue player_levels = AP_GetSlotDataValue(state, "player_levels");
@@ -214,6 +214,13 @@ extern "C"
                 MEM_W(0xFFFFFFFF80127580 + ((k + (i << 3)) << 2), 0) = stageRemap[lvl];
 
             }
+        }
+        SlotDataValue boss_requirements = AP_GetSlotDataValue(state, "boss_requirements");
+        for (const auto& kvp : boss_requirements.values) {
+            int i = stoi(kvp.first);
+            SlotDataValue num = kvp.second;
+            if (num.type != SlotDataType::Int) continue;
+            MEM_B(0xFFFFFFFF801274A8 + i, 0) = (u8)num._int;
         }
 
     }

@@ -27,7 +27,7 @@ RECOMP_IMPORT(".", u32 rando_get_last_location_sent());
 RECOMP_IMPORT(".", u32 rando_get_seed_name(char* seed_name_out, u32 buffer_size));
 RECOMP_IMPORT(".", bool rando_is_connected());
 RECOMP_IMPORT(".", bool rando_connect_failed());
-RECOMP_IMPORT(".", void rando_get_player_levels());
+RECOMP_IMPORT(".", void rando_get_slot_data());
 
 struct SlotData{
     u8 SplitPowerCombos;
