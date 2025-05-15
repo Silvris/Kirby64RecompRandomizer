@@ -13,6 +13,8 @@ typedef double                 f64;
 
 typedef float             Vec3f[3];
 
+#define NULL (void*) 0
+
 typedef struct  {
     f32 x;
     f32 y;

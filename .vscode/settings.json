@@ -6,6 +6,31 @@
         "recompconfig.h": "c",
         "recomputils.h": "c",
         "types.h": "c",
-        "archipelago.h": "c"
-    }
+        "archipelago.h": "c",
+        "recompui.h": "c",
+        "any": "c",
+        "complex": "c",
+        "memory_resource": "c",
+        "regex": "c",
+        "graphics.h": "c",
+        "gobj.h": "c",
+        "patches.h": "c",
+        "ui_funcs.h": "c",
+        "recompui_event_structs.h": "c",
+        "patch_helpers.h": "c",
+        "stdarg.h": "c"
+    },
+    "makefile.dryrunSwitches": [
+        "--always-make",
+        "--print-directory",
+        "--dry-run",
+        "--assume-old=Makefile",
+        "Makefile",
+        "all",
+        "AM_MAKEFLAGS=--assume-old=Makefile Makefile"
+    ],
+    "testing.automaticallyOpenPeekView": "never",
+    "makefile.configureAfterCommand": false,
+    "makefile.configureOnEdit": false,
+
 }

@@ -150,7 +150,7 @@ RECOMP_PATCH void game_tick(s32 arg0) {
     func_800A3058();
     InitArchipelagoVariables();
     while (1) {
-
+        recomp_printf("Test print\n");
         func_800A2C80();
         switch (gGameState) {                           /* switch 1 */
             default:                                            /* switch 1 */
@@ -505,8 +505,10 @@ RECOMP_PATCH void game_tick(s32 arg0) {
                 load_menu_overlays();
                 func_80165370_ovl5();
                 continue;
+            case 32:
+                load_menu_overlays();
+                func_80179D48_ovl5();
+                continue;
         }
-        load_menu_overlays();
-        func_80179D48_ovl5();
     }
 }

@@ -234,7 +234,6 @@ extern "C"
 
         std::string key = "";
         getStr(rdram, ptr, key);
-        key += "_P" + std::to_string(AP_GetPlayerID(state));
         char* value_char_ptr = AP_GetDataStorageSync(state, key.c_str());
 
         u32 value = 0;
@@ -375,6 +374,11 @@ extern "C"
         u32 arg = _arg<0, u32>(rdram, ctx);
         int64_t location = arg;
         _return(ctx, (int)AP_GetLocationItemType(state, location));
+    }
+
+    DLLEXPORT void rando_get_own_team_id(uint8_t* rdram, recomp_context* ctx)
+    {
+        _return(ctx, ((u32)AP_GetTeamID(state)));
     }
 
     DLLEXPORT void rando_get_own_slot_id(uint8_t* rdram, recomp_context* ctx)

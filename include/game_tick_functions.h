@@ -1,3 +1,4 @@
+#pragma once
 #include "Game.h"
 #include "types.h"
 #include "libc/stdbool.h"

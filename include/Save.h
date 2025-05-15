@@ -1,3 +1,4 @@
+#pragma once
 #include "types.h"
 typedef struct {
 	/* 0x0; */  u32 world;
