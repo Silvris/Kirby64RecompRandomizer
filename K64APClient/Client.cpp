@@ -30,6 +30,14 @@ void glueGetLine(std::ifstream& in, std::string& outString)
 AP_State* state;
 std::u8string room_seed_name;
 
+int levelRemap[28] = {
+    0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 0, 1, 2, 3, 4, 5
+};
+
+int stageRemap[28] = {
+    0, 1, 2, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 4, 4, 4, 3
+};
+
 u32 hasItem(u64 itemId)
 {
     u32 count = 0;
@@ -195,8 +203,16 @@ extern "C"
             for (const auto& stage : level.values) {
                 int k = stoi(stage.first);
                 if (stage.second.type != SlotDataType::Int) continue;
-                s32 lvl = stage.second._int & 0xFF;
-                MEM_W(0xFFFFFFFF801274C0 + ((k + (i << 3)) << 2), 0) = 1;
+                s32 lvl = stage.second._int & 0xFFF;
+                if (lvl & 0x200) {
+                    lvl = (lvl & 0xFF) + 22;
+                }
+                else {
+                    lvl--;
+                }
+                MEM_W(0xFFFFFFFF801274C0 + ((k + (i << 3)) << 2), 0) = levelRemap[lvl];
+                MEM_W(0xFFFFFFFF80127580 + ((k + (i << 3)) << 2), 0) = stageRemap[lvl];
+
             }
         }
 
