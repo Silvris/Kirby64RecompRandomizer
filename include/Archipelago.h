@@ -27,11 +27,11 @@ RECOMP_IMPORT(".", u32 rando_get_last_location_sent());
 RECOMP_IMPORT(".", u32 rando_get_seed_name(char* seed_name_out, u32 buffer_size));
 RECOMP_IMPORT(".", bool rando_is_connected());
 RECOMP_IMPORT(".", bool rando_connect_failed());
-RECOMP_IMPORT(".", u64 rando_get_slotdata_raw(const char* key));
-RECOMP_IMPORT(".", u64 rando_get_slotdata_u32(const char* key));
-RECOMP_IMPORT(".", u64 rando_access_slotdata_raw_array(u64 dataHandle, u32 index));
-RECOMP_IMPORT(".", u64 rando_access_slotdata_raw_dict(u64 dataHandle, const char* key));
-
+RECOMP_IMPORT(".", u32 rando_get_slotdata_u32(const char* key));
+RECOMP_IMPORT(".", void rando_get_slotdata_raw_o32(const char* key, u32* out_handle_ptr));
+RECOMP_IMPORT(".", u32 rando_access_slotdata_raw_u32_o32(u32* in_handle_ptr));
+RECOMP_IMPORT(".", void rando_access_slotdata_raw_array_o32(u32* in_handle_ptr, u32 index, u32* out_handle_ptr));
+RECOMP_IMPORT(".", void rando_access_slotdata_raw_dict_o32(u32* in_handle_ptr, const char* key, u32* out_handle_ptr));
 
 typedef enum {
     WaddleDee = 0,

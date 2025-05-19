@@ -95,21 +95,31 @@ RECOMP_HOOK_RETURN("func_8000256C") void on_main(){
         }
         recomp_change_save_file(file_name);
         play_sound(1);
-        u64 player_levels = rando_get_slotdata_raw("player_levels");
-        u64 boss_requirements = rando_get_slotdata_raw("boss_requirements");
-        u64 current_level;
+        u32 player_levels[2];
+        rando_get_slotdata_raw_o32("player_levels", player_levels);
+        //u64 boss_requirements = (u64) rando_get_slotdata_raw("boss_requirements");
+
+        u32 current_level[2];
         char  level_ind[2];
+        u32 lvl_ptr[2];
+        int len = 3;
         for (u32 i = 1; i < 7; i++){
-            int len = 3;
-            if (1 < i < 6) len++;
+            recomp_printf("Level %i: %i\n", i, 2 <= i <= 5);
+            if ((2 <= i) && (5 >= i)){
+                len = 4;
+            }
+            else {
+                len = 3;
+            }
             // this might be the worst code i've ever written
             level_ind[0] = (char) ('0' + i);
             level_ind[1] = ""[0];
-            recomp_printf("%s\n", level_ind);
-            current_level = rando_access_slotdata_raw_dict(player_levels, level_ind);
-            recomp_printf("%x\n", current_level);
+            rando_access_slotdata_raw_dict_o32(player_levels, level_ind, current_level);
+            recomp_printf("Level %i length: %i\n", i, len);
+            //recomp_printf("%x\n", current_level);
             for(u32 j = 0; j < len; j++){
-                s32 lvl = * (s32*)rando_access_slotdata_raw_array(current_level, j) & 0xFFF;
+                rando_access_slotdata_raw_array_o32(current_level, j, lvl_ptr);
+                u32 lvl = rando_access_slotdata_raw_u32_o32(lvl_ptr) & 0xFFF;
                 recomp_printf("%i\n", lvl);
                 if (lvl & 0x200) {
                     lvl = (lvl & 0xFF) + 22;
@@ -121,13 +131,13 @@ RECOMP_HOOK_RETURN("func_8000256C") void on_main(){
                 gStageIndex[j + ((i - 1) << 3)] = stageRemap[lvl];
             }
         }
-        for (u32 i = 0; i < 7; i++){
+        /*for (u32 i= 0; i < 7; i++){
             s32 requirement = * (s32*) rando_access_slotdata_raw_array(boss_requirements, i);
             gCrystalRequirement[i] = requirement;
-        }
+        }*/
         gSlotData.SplitPowerCombos = rando_get_slotdata_u32("split_power_combos");
         gSlotData.GoalSpeed = rando_get_slotdata_u32("goal_speed");
-        gSlotData.DeathLink = rando_get_slotdata_u32("death_link");
+        //gSlotData.DeathLink = rando_get_slotdata_u32("death_link");
         //colors_set_human_tunic(C_TO_PARAMS(rando_get_tunic_color()));
         save_init = true;
     }

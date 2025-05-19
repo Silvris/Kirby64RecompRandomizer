@@ -67,10 +67,11 @@ native_libraries = [
         "rando_get_seed_name",
         "rando_connect_failed",
         "rando_is_connected",
-        "rando_get_slotdata_raw",
+        "rando_get_slotdata_raw_o32",
         "rando_get_slotdata_u32",
-        "rando_access_slotdata_raw_array",
-        "rando_access_slotdata_raw_dict",
+        "rando_access_slotdata_raw_u32_o32",
+        "rando_access_slotdata_raw_array_o32",
+        "rando_access_slotdata_raw_dict_o32",
         ] }
 ]
 
