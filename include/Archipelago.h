@@ -27,7 +27,17 @@ RECOMP_IMPORT(".", u32 rando_get_last_location_sent());
 RECOMP_IMPORT(".", u32 rando_get_seed_name(char* seed_name_out, u32 buffer_size));
 RECOMP_IMPORT(".", bool rando_is_connected());
 RECOMP_IMPORT(".", bool rando_connect_failed());
-RECOMP_IMPORT(".", void rando_get_slot_data());
+RECOMP_IMPORT(".", u64 rando_get_slotdata_raw(const char* key));
+RECOMP_IMPORT(".", u64 rando_get_slotdata_u32(const char* key));
+RECOMP_IMPORT(".", u64 rando_access_slotdata_raw_array(u64 dataHandle, u32 index));
+RECOMP_IMPORT(".", u64 rando_access_slotdata_raw_dict(u64 dataHandle, const char* key));
+
+
+typedef enum {
+    WaddleDee = 0,
+    Adeleine = 1,
+    KingDedede = 2,
+}Friends;
 
 struct SlotData{
     u8 SplitPowerCombos;
@@ -44,7 +54,7 @@ extern u32 gLevelIndex[48];
 extern u32 gStageIndex[48];
 
 bool InitArchipelagoVariables();
-bool HasFriend(int index);
+bool HasFriend(Friends index);
 s32 GetLevelStageIndex(s32 level, s32 stage);
 //bool SetArchipelagoVariables();
 

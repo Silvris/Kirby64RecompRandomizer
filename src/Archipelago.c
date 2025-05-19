@@ -41,7 +41,7 @@ bool InitArchipelagoVariables(){
     return true;
 }
 
-bool HasFriend(int index){
+bool HasFriend(Friends index){
     if (index < 0) return false;
     if (index > 2) return false;
     return gFriendUnlocked[index];

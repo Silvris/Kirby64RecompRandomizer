@@ -49,7 +49,7 @@ apcpp:
 client: apcpp
 	$(MSBUILD) $(MSBUILD_FLAGS) ./K64APClient/K64APClient.sln
 
-all: $(TARGET) client
+all: $(TARGET) apcpp
 	RecompModTool.exe mod.toml $(BUILD_DIR)/output
 	echo "Done."
 

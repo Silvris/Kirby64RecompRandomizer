@@ -42,7 +42,7 @@ dependencies = [
 # Native libraries (e.g. DLLs) and the functions they export.
 native_libraries = [
 # Example native library:
-    { name = "K64APClient", funcs = [
+    { name = "APCpp-Glue", funcs = [
         "rando_init",
         "rando_location_is_checked",
         "rando_location_is_checked_async",
@@ -67,7 +67,10 @@ native_libraries = [
         "rando_get_seed_name",
         "rando_connect_failed",
         "rando_is_connected",
-        "rando_get_slot_data",
+        "rando_get_slotdata_raw",
+        "rando_get_slotdata_u32",
+        "rando_access_slotdata_raw_array",
+        "rando_access_slotdata_raw_dict",
         ] }
 ]
 
